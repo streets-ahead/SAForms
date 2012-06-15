@@ -65,6 +65,18 @@
     }
 }
 
+- (id) boundValue {
+    id boundValue = nil;
+    if(self.boundObject != nil && self.boundObjectKeyPath != nil) {    
+        @try {
+            boundValue = [self.boundObject valueForKeyPath:self.boundObjectKeyPath];
+        } @catch (NSException *exception) { 
+            NSLog(@"undefined keypath %@", self.boundObjectKeyPath); 
+        }    
+    }
+    return boundValue;
+}
+
 - (UITableViewCell*) formatCell:(SAFormCell*)cell {
     NSLog(@"formatting cell %@", self.defaultLabel);
     cell.textLabel.text = self.defaultLabel;

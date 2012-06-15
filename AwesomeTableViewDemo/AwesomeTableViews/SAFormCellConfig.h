@@ -6,6 +6,8 @@
 #define TEXT_COLOR @"textLabel.textColor"
 #define TEXT_BACKGROUND @"textLabel.backgroundColor"
 
+@class SAFormCellConfig;
+
 typedef void (^ActionBlock)(UITableView* tableView, UITableViewCell* cell, NSIndexPath* indexPath);
 typedef void (^ValueChangedBlock)(id value);
 typedef void (^FormatBlock) (SAFormCell* cell);
@@ -29,5 +31,6 @@ typedef void (^FormControlFormat) (id formControl);
 - (id)initWithLabel:(NSString*)label;
 - (UITableViewCell*) formatCell:(SAFormCell*)cell;
 - (void) valueUpdated:(id)value;
+- (id) boundValue; 
 
 @end

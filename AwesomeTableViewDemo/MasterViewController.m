@@ -8,7 +8,9 @@
 - (SAFormSection*) buttonSection;
 @end
 
-@implementation MasterViewController
+@implementation MasterViewController {
+    NSMutableDictionary* _loginModel;
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -33,10 +35,9 @@
     [mainSection addCell:loginReg];
     [mainSection addCell:twitter];
     
+    _loginModel = [NSMutableDictionary dictionaryWithObject:[NSNumber numberWithInt:0] forKey:@"tab"];
     SAFormSection* loginSection = [self loginSection];
     SAFormSection* registerSection = [self registerSection];
-    
-    NSMutableDictionary* model = [NSMutableDictionary dictionaryWithObject:[NSNumber numberWithInt:0] forKey:@"tab"];
     
     loginReg.selectedBlock = ^(UITableView* tv, UITableViewCell* cell, NSIndexPath* indexPath) {
         SAFormTableViewController* detail = [[SAFormTableViewController alloc] initWithStyle:UITableViewStyleGrouped];
@@ -44,7 +45,7 @@
         detail.title = @"Login or Register";
         SAFormSection* optSect = [detail addSection:[[SAFormSection alloc] init]];
         SAFormCellConfig* segCell = [[SAFormCellConfig alloc] initWithCellClass:[SASegmentedCell class]];
-        segCell.boundObject = model;
+        segCell.boundObject = _loginModel;
         segCell.boundObjectKeyPath = @"tab";
         segCell.selectionStyle = UITableViewCellSeparatorStyleNone;
         segCell.cellFormatterBlock = ^(SAFormCell* cell) {
@@ -54,14 +55,14 @@
             cell.backgroundColor = [UIColor clearColor];
         };
         
-        if([[model valueForKey:@"tab"] isEqualToNumber:[NSNumber numberWithInt:1]]) {
+        if([[_loginModel valueForKey:@"tab"] isEqualToNumber:[NSNumber numberWithInt:1]]) {
             [detail addSection:registerSection];
         } else {
             [detail addSection:loginSection];
         }
         
         segCell.valueChangedBlock = ^(id value) {
-            if([[model valueForKey:@"tab"] isEqualToNumber:[NSNumber numberWithInt:1]]) {
+            if([[_loginModel valueForKey:@"tab"] isEqualToNumber:[NSNumber numberWithInt:1]]) {
                 [detail replaceSection:loginSection withSection:registerSection];
             } else {
                 [detail replaceSection:registerSection withSection:loginSection];
@@ -78,7 +79,8 @@
     SAFormCellConfig* login = [buttonSection addCell:[[SAFormCellConfig alloc] initWithCellClass:[SAButtonCell class]]];
     login.defaultLabel = @"Login";
     login.selectedBlock = ^(UITableView* tableView, UITableViewCell* cell, NSIndexPath* indexPath) {
-        UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"alert" message:@"something" delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
+        NSString* str = [NSString stringWithFormat:@"your username is %@", [_loginModel valueForKey:@"username"]];
+        UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"alert" message:str delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
         [alert show];
         [tableView deselectRowAtIndexPath:indexPath animated:YES];
     };
@@ -90,6 +92,9 @@
     SAFormSection* section = [[SAFormSection alloc] init];
     SAFormCellConfig* username = [section addCell:[[SAFormCellConfig alloc] initWithCellClass:[SATextCell class]]];
     username.defaultLabel = @"Username";
+    username.selectionStyle = UITableViewCellSelectionStyleNone;
+    username.boundObject = _loginModel;
+    username.boundObjectKeyPath = @"username";
     username.cellFormatterBlock = ^(SAFormCell* cell) {
         [(SATextCell*)cell textField].secureTextEntry = NO;
     };
@@ -99,6 +104,9 @@
     
     SAFormCellConfig* password = [section addCell:[[SAFormCellConfig alloc] initWithCellClass:[SATextCell class]]];
     password.defaultLabel = @"Password";
+    password.boundObject = _loginModel;
+    password.boundObjectKeyPath = @"password";
+    password.selectionStyle = UITableViewCellSelectionStyleNone;
     password.cellFormatterBlock = ^(SAFormCell* cell) {
         [(SATextCell*)cell textField].secureTextEntry = YES;
     };
