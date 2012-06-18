@@ -44,8 +44,13 @@
 
 - (void)layoutSubviews {
     [super layoutSubviews];
-    CGFloat percent = self.contentView.bounds.size.width * .35;
-    CGRect formRect = CGRectMake(percent, 10, self.contentView.bounds.size.width-percent, self.contentView.bounds.size.height-20);
+    CGFloat percent = 10;
+    if(![self.textLabel.text isEqualToString:@""]) {
+        percent = self.contentView.bounds.size.width * .35;
+    }
+    CGRect formRect = CGRectMake(percent, 10, 
+                                 self.contentView.bounds.size.width - percent - 10, 
+                                 self.contentView.bounds.size.height - 20);
     self.textField.frame = formRect;
     [self.contentView bringSubviewToFront:self.textField];
 }
