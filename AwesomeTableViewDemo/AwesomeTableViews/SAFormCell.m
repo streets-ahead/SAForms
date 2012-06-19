@@ -2,9 +2,56 @@
 #import "SAFormTableViewController.h"
 #import "SAFormCellConfig.h"
 
+@interface SAFormCell ()
+- (void) drawOrMoveToX:(CGFloat)x y:(CGFloat)y forMask:(int)mask withContext:(CGContextRef)context;
+@end
+
 @implementation SAFormCell 
+@synthesize clearBackground = _squareStyle;
 @synthesize currentConfig = _currentConfig;
 @synthesize formControl = _formControl;
+@synthesize borderColor = _borderColor;
+@synthesize border = _border;
+
+- (void)layoutSubviews {
+    [super layoutSubviews];
+        
+    if(self.clearBackground && self.backgroundView == nil) {
+        self.backgroundView = [[UIView alloc] initWithFrame:CGRectZero];
+        self.backgroundView.backgroundColor = [UIColor clearColor];
+    }
+}
+
+- (void) drawOrMoveToX:(CGFloat)x y:(CGFloat)y forMask:(int)mask withContext:(CGContextRef)context {
+    if(self.border & mask) {
+        CGContextAddLineToPoint(context, x, y);
+    } else {
+        CGContextMoveToPoint(context, x, y);
+    }
+}
+
+- (void)drawRect:(CGRect)rect {
+    [super drawRect:rect];
+    if(_border) {
+        CGContextRef context = UIGraphicsGetCurrentContext();
+        CGFloat minx = CGRectGetMinX(self.frame);
+        CGFloat maxx = CGRectGetMaxX(self.frame);
+        CGFloat miny = CGRectGetMinY(self.frame);
+        CGFloat maxy = CGRectGetMaxY(self.frame);
+        NSLog(@"border %@", NSStringFromCGRect(self.bounds));
+        
+        CGContextBeginPath(context);    
+        CGContextMoveToPoint(context, 0, 0);
+        [self drawOrMoveToX:maxx y:miny forMask:SAFormCellBorderTop withContext:context];
+        [self drawOrMoveToX:maxx y:maxy forMask:SAFormCellBorderRight withContext:context];
+        [self drawOrMoveToX:minx y:maxy forMask:SAFormCellBorderBottom withContext:context];
+        [self drawOrMoveToX:minx y:miny forMask:SAFormCellBorderLeft withContext:context];
+        
+        CGContextSetStrokeColorWithColor(context, _borderColor.CGColor);
+        CGContextSetLineWidth(context, 1);
+        CGContextStrokePath(context);
+    }
+}
 
 - (void) setControlValue:(id) value {
     @throw [NSException exceptionWithName:@"Subclass must implement this method" reason:@"" userInfo:nil];    
@@ -45,7 +92,8 @@
 - (void)layoutSubviews {
     [super layoutSubviews];
     CGFloat percent = 10;
-    if(![self.textLabel.text isEqualToString:@""]) {
+    NSLog(@"%@", self.textLabel.text);
+    if(self.textLabel.text != nil && ![self.textLabel.text isEqualToString:@""]) {
         percent = self.contentView.bounds.size.width * .35;
     }
     CGRect formRect = CGRectMake(percent, 10, 
@@ -107,8 +155,6 @@
                                  (cellHeight - segHeight) / 2, 
                                  segWidth, 
                                  segHeight);
-    
-    
     
     self.segmentedControl.frame = segFrame;
 }
