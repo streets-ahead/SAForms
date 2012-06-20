@@ -16,7 +16,7 @@
 - (void)layoutSubviews {
     [super layoutSubviews];
         
-    if(self.clearBackground && self.backgroundView == nil) {
+    if(self.clearBackground) {
         self.backgroundView = [[UIView alloc] initWithFrame:CGRectZero];
         self.backgroundView.backgroundColor = [UIColor clearColor];
     }
@@ -34,14 +34,13 @@
     [super drawRect:rect];
     if(_border) {
         CGContextRef context = UIGraphicsGetCurrentContext();
-        CGFloat minx = CGRectGetMinX(self.frame);
-        CGFloat maxx = CGRectGetMaxX(self.frame);
-        CGFloat miny = CGRectGetMinY(self.frame);
-        CGFloat maxy = CGRectGetMaxY(self.frame);
-        NSLog(@"border %@", NSStringFromCGRect(self.bounds));
+        CGFloat minx = CGRectGetMinX(self.contentView.frame);
+        CGFloat maxx = CGRectGetMaxX(self.contentView.frame);
+        CGFloat miny = CGRectGetMinY(self.contentView.frame);
+        CGFloat maxy = CGRectGetMaxY(self.contentView.frame);
         
         CGContextBeginPath(context);    
-        CGContextMoveToPoint(context, 0, 0);
+        CGContextMoveToPoint(context, minx, miny);
         [self drawOrMoveToX:maxx y:miny forMask:SAFormCellBorderTop withContext:context];
         [self drawOrMoveToX:maxx y:maxy forMask:SAFormCellBorderRight withContext:context];
         [self drawOrMoveToX:minx y:maxy forMask:SAFormCellBorderBottom withContext:context];
