@@ -89,7 +89,6 @@
 }
 
 - (UITableViewCell*) formatCell:(SAFormCell*)cell {
-    NSLog(@"formatting cell %@", self.defaultLabel);
     cell.textLabel.text = self.defaultLabel;
     cell.selectionStyle = self.selectionStyle;
     cell.currentConfig = self;
