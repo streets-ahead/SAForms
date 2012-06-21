@@ -82,6 +82,8 @@
         } @catch (NSException *exception) { 
             NSLog(@"undefined keypath %@", self.boundObjectKeyPath); 
         }    
+    } else if (self.boundObject != nil) {
+        boundValue = self.boundObject;
     }
     return boundValue;
 }
@@ -109,6 +111,8 @@
         } @catch (NSException *exception) { 
             NSLog(@"undefined keypath %@", self.boundObjectKeyPath); 
         }    
+    } else if(self.boundObject != nil) {
+        [cell setControlValue:self.boundObject];
     }
     
     if(self.formControlFormatBlock != nil && cell.formControl != nil) {

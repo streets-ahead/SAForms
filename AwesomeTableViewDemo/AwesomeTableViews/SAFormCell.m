@@ -6,7 +6,9 @@
 - (void) drawOrMoveToX:(CGFloat)x y:(CGFloat)y forMask:(int)mask withContext:(CGContextRef)context;
 @end
 
-@implementation SAFormCell 
+@implementation SAFormCell {
+    UIView* _clearBackgroundView;
+}
 @synthesize clearBackground = _squareStyle;
 @synthesize currentConfig = _currentConfig;
 @synthesize formControl = _formControl;
@@ -16,8 +18,9 @@
 - (void)layoutSubviews {
     [super layoutSubviews];
         
-    if(self.clearBackground) {
-        self.backgroundView = [[UIView alloc] initWithFrame:CGRectZero];
+    if(self.clearBackground && _clearBackgroundView == nil) {
+        _clearBackgroundView = [[UIView alloc] initWithFrame:CGRectZero];
+        self.backgroundView = _clearBackgroundView;
         self.backgroundView.backgroundColor = [UIColor clearColor];
     }
 }
