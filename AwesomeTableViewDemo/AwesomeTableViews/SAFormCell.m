@@ -95,9 +95,9 @@
     if(self.textLabel.text != nil && ![self.textLabel.text isEqualToString:@""]) {
         percent = self.contentView.bounds.size.width * .35;
     }
-    CGRect formRect = CGRectMake(percent, 10, 
+    CGRect formRect = CGRectMake(percent, 5, 
                                  self.contentView.bounds.size.width - percent - 10, 
-                                 self.contentView.bounds.size.height - 20);
+                                 self.contentView.bounds.size.height - 10);
     self.textField.frame = formRect;
     [self.contentView bringSubviewToFront:self.textField];
 }
@@ -148,12 +148,7 @@
     [super layoutSubviews];
     CGFloat cellHeight = self.contentView.bounds.size.height;
     CGFloat cellWidth = self.contentView.bounds.size.width;
-    CGFloat segWidth = self.segmentedControl.frame.size.width;
-    CGFloat segHeight = self.segmentedControl.frame.size.height;
-    CGRect segFrame = CGRectMake( (cellWidth - segWidth)/2, 
-                                 (cellHeight - segHeight) / 2, 
-                                 segWidth, 
-                                 segHeight);
+    CGRect segFrame = CGRectMake( 0, 0, cellWidth, cellHeight);
     
     self.segmentedControl.frame = segFrame;
 }
@@ -165,7 +160,7 @@
     CGFloat cellHeight = self.contentView.bounds.size.height;
     CGFloat cellWidth = self.contentView.bounds.size.width;
     self.textLabel.textAlignment = UITextAlignmentCenter;
-    self.textLabel.frame = CGRectMake(10, 10, cellWidth-20, cellHeight-20);
+    self.textLabel.frame = CGRectMake(5, 5, cellWidth-10, cellHeight-10);
 }
 @end
 
