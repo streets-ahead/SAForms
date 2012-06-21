@@ -18,7 +18,6 @@ typedef void (^FormControlFormat) (id formControl);
 @property (assign) Class cellClass;
 @property (copy) ActionBlock selectedBlock;
 @property (assign) UITableViewCellStyle cellStyle;
-@property (copy) FormatBlock cellFormatterBlock;
 @property (strong) NSDictionary* cellProperties;
 @property (strong) NSString* defaultLabel;
 @property (assign) UITableViewCellSelectionStyle selectionStyle;
@@ -32,5 +31,6 @@ typedef void (^FormControlFormat) (id formControl);
 - (UITableViewCell*) formatCell:(SAFormCell*)cell;
 - (void) valueUpdated:(id)value;
 - (id) boundValue; 
+- (void) addFormatterBlock:(FormatBlock)block;
 
 @end

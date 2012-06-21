@@ -1,12 +1,13 @@
 #import "SAFormCellConfig.h"
 #import "SAFormCell.h"
 
-@implementation SAFormCellConfig : NSObject
+@implementation SAFormCellConfig {
+    NSMutableArray* _cellFormatterBlocks;
+}
 @synthesize height = _height; 
 @synthesize cellClass = _cellClass;
 @synthesize selectedBlock = _actionBlock;
 @synthesize cellStyle = _cellStyle;
-@synthesize cellFormatterBlock = _cellFormatterBlock;
 @synthesize cellProperties = _cellProperties;
 @synthesize selectionStyle = _selectionStyle;
 @synthesize defaultLabel = _defaultLabel;
@@ -51,6 +52,14 @@
     return self;
 }
 
+- (void) addFormatterBlock:(FormatBlock)block {
+    if(_cellFormatterBlocks == nil) {
+        _cellFormatterBlocks = [NSMutableArray array];
+    }
+    //TODO: investigate if the copy is needed, from what I've read it may be
+    [_cellFormatterBlocks addObject:[block copy]];
+}
+
 - (void) valueUpdated:(id)value {    
     if(self.boundObject != nil && self.boundObjectKeyPath != nil) {
         @try {
@@ -88,8 +97,10 @@
         }];
     }
     
-    if(self.cellFormatterBlock != nil) {
-        self.cellFormatterBlock(cell);
+    if(_cellFormatterBlocks != nil) {
+        for (FormatBlock formatter in _cellFormatterBlocks) {
+            formatter(cell);
+        }
     }
     
     if(self.boundObject != nil && self.boundObjectKeyPath != nil) {    
