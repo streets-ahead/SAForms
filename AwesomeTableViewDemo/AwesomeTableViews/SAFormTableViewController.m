@@ -4,21 +4,61 @@
 #import "SAFormSection.h"
 #import "SAFormHeaderFooter.h"
 
-@implementation SAFormTableViewController
+@implementation SAFormTableViewController 
 
 @synthesize sections = _sections;
+@synthesize currentFirstResponder = _currentFirstResponder;
+@synthesize keyboardAccessoryBar = _keyboardAccessoryBar;
+@synthesize addKeyboardAccessroy = _addKeyboardAccessroy;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     _sections = [NSMutableArray array];
+    
+    self.keyboardAccessoryBar = [[UIToolbar alloc] initWithFrame:CGRectZero];
+    [self.keyboardAccessoryBar sizeToFit];
+    UIBarButtonItem* space = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:self action:nil];
+    UIBarButtonItem* done = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(doneEditing)];
+    [self.keyboardAccessoryBar setItems:[NSArray arrayWithObjects:space, done, nil]];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     NSLog(@"view will apear");
+    [super viewWillAppear:YES];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) 
+                                                 name:UIKeyboardWillShowNotification 
+                                               object:nil];
 }
 
 - (void)viewDidDisappear:(BOOL)animated {
-    NSLog(@"view did disapear");
+    NSLog(@"view did dissapear");
+    [[NSNotificationCenter defaultCenter] removeObserver:self 
+                                                    name:UIKeyboardWillShowNotification 
+                                                  object:nil];
+}
+
+- (void) keyboardWillShow:(NSNotification*)notification {
+    NSLog(@"keyboard will show");
+    
+}
+
+- (void) doneEditing {
+    [self.currentFirstResponder.formControl resignFirstResponder];
+}
+
+// TODO: this is implemented as non-standard setter becuaes I'm not sure of the implementation
+// I may want to change it later so I made the api a little abstracted.
+- (void) registerFirstResponder:(SAFormCell*)cell {
+    _currentFirstResponder = cell;
+    if(self.addKeyboardAccessroy && [_currentFirstResponder.formControl respondsToSelector:@selector(setInputAccessoryView:)]) {
+        [_currentFirstResponder.formControl setInputAccessoryView:self.keyboardAccessoryBar];
+    }
+}
+
+- (void) deRegisterFirstResponder:(SAFormCell*)cell {
+    if(cell == self.currentFirstResponder) {
+        _currentFirstResponder = nil;
+    }
 }
 
 #pragma mark - Table view data source

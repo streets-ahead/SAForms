@@ -4,6 +4,9 @@
 
 @interface SAFormTableViewController : UITableViewController
 @property (strong, readonly) NSMutableArray* sections;
+@property (strong) UIToolbar* keyboardAccessoryBar;
+@property (assign) BOOL addKeyboardAccessroy;
+@property (strong, readonly) SAFormCell* currentFirstResponder;
 
 - (SAFormSection*) addSection:(SAFormSection*) section;
 - (SAFormSection*) addSection:(SAFormSection*) section withAnimation:(BOOL)animation;
@@ -13,4 +16,10 @@
 
 - (void) replaceSection:(SAFormSection*)oldSection withSection:(SAFormSection*)newSection;
 - (void) replaceSectionAtIndex:(NSInteger)ind withSection:(SAFormSection*)newSection;
+
+- (void) keyboardWillShow:(NSNotification*)notification;
+
+- (void) registerFirstResponder:(SAFormCell*)cell;
+- (void) deRegisterFirstResponder:(SAFormCell*)cell;
+- (void) doneEditing;
 @end

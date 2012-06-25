@@ -1,5 +1,6 @@
 #import "SATextCell.h"
 #import "SAFormCellConfig.h"
+#import "SAFormTableViewController.h"
 
 @implementation SATextCell : SAFormCell
 @synthesize textField = _textField;
@@ -8,12 +9,13 @@
     if (self) {
         NSLog(@"init text cell");
         self.selectionStyle = UITableViewCellSelectionStyleNone;
-        self.textField = [[UITextField alloc] initWithFrame:CGRectZero];     
-        self.textField.borderStyle = UITextBorderStyleNone;
-        self.textField.font = [UIFont systemFontOfSize:17];
-        self.textField.textColor = [UIColor colorWithWhite:.4 alpha:1];
-        self.textField.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;
-        [self.textField addTarget:self action:@selector(valueChanged) forControlEvents:UIControlEventEditingChanged];
+        _textField = [[UITextField alloc] initWithFrame:CGRectZero];     
+        _textField.borderStyle = UITextBorderStyleNone;
+        _textField.font = [UIFont systemFontOfSize:17];
+        _textField.textColor = [UIColor colorWithWhite:.4 alpha:1];
+        _textField.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;
+        _textField.delegate = self;
+        [_textField addTarget:self action:@selector(valueChanged) forControlEvents:UIControlEventEditingChanged];
         [self.contentView addSubview:self.textField];
         self.formControl = self.textField;
     }
@@ -41,4 +43,25 @@
     self.textField.frame = formRect;
     [self.contentView bringSubviewToFront:self.textField];
 }
+
+- (BOOL)textFieldShouldBeginEditing:(UITextField *)textField {
+    id supr = self.superview;
+    if(supr != nil && [supr isKindOfClass:[UITableView class]]) {   
+        if([[supr delegate] respondsToSelector:@selector(registerFirstResponder:)]) {
+            [[supr delegate] registerFirstResponder:self];
+        }
+    }
+    return YES;
+}
+
+- (void)textFieldDidEndEditing:(UITextField *)textField {
+    id supr = self.superview;
+    if(supr != nil && [supr isKindOfClass:[UITableView class]]) {   
+        if([[supr delegate] respondsToSelector:@selector(deRegisterFirstResponder:)]) {
+            [[supr delegate] deRegisterFirstResponder:self];
+        }
+    }
+}
+
+
 @end
