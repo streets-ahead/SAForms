@@ -23,16 +23,3 @@ typedef void (^FormControlFormatter) (UIControl* cell);
 - (void) valueChanged;
 @end
 
-@interface SATextCell : SAFormCell
-@property (strong) UITextField* textField;
-@end
-
-@interface SASegmentedCell : SAFormCell
-@property (strong) UISegmentedControl* segmentedControl;
-- (void) setSegmentTitles:(NSArray*) segments;
-- (void) setSegmentImages:(NSArray*) segments;
-@end
-
-@interface SAButtonCell : SAFormCell
-@end
-
