@@ -2,7 +2,6 @@
 #import "SAFormHeaderFooter.h"
 #import "SAFormCellConfig.m"
 
-
 @implementation SAFormSection : NSObject 
 @synthesize cells = _cells;
 @synthesize header = _header;

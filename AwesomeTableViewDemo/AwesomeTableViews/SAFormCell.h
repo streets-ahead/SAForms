@@ -11,7 +11,7 @@ typedef enum {
 
 @class SAFormCellConfig;
 
-typedef void (^FormControlFormatter) (UIControl* cell);
+
 
 @interface SAFormCell : UITableViewCell
 @property (weak) SAFormCellConfig* currentConfig;

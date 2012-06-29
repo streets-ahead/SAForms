@@ -10,7 +10,7 @@
 @property (assign) NSInteger sectionNumber;
 
 - (SAFormCellConfig*) addCell:(SAFormCellConfig*) cell;
-- (SAFormCellConfig*)addCell:(SAFormCellConfig *)cell withAnimation:(BOOL)animate;
+- (SAFormCellConfig*) addCell:(SAFormCellConfig *)cell withAnimation:(BOOL)animate;
 
 - (SAFormCellConfig*) insertCell:(SAFormCellConfig*) cell;
 - (SAFormCellConfig*) insertCellAtIndex:(NSInteger) ind;
