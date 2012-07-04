@@ -15,6 +15,7 @@
 @synthesize boundObject = _boundObject;
 @synthesize valueChangedBlock = _valueChangedBlock;
 @synthesize formControlFormatBlock = _formControlFormatBlock;
+@synthesize boundIndex = _boundIndex;
 
 - (id)init {
     self = [super init];
@@ -23,6 +24,7 @@
         self.cellStyle = UITableViewCellStyleDefault;
         self.selectionStyle = UITableViewCellSelectionStyleBlue;
         self.height = 44;
+        self.boundIndex = -1;
     }
     return self;
 }
@@ -67,6 +69,14 @@
         } @catch (NSException *exception) { 
             NSLog(@"undefined keypath %@", self.boundObjectKeyPath); 
         }
+    } else if([self.boundObject isKindOfClass:[NSMutableArray class]]) {
+        @try {
+            [self.boundObject replaceObjectAtIndex:self.boundIndex withObject:value];   
+        } @catch (NSException *exception) { 
+            NSLog(@"undefined keypath %d", self.boundIndex); 
+        }
+    } else {
+        self.boundObject = value;
     }
     
     if(self.valueChangedBlock != nil) {
@@ -82,7 +92,13 @@
         } @catch (NSException *exception) { 
             NSLog(@"undefined keypath %@", self.boundObjectKeyPath); 
         }    
-    } else if (self.boundObject != nil) {
+    }else if([self.boundObject isKindOfClass:[NSMutableArray class]]) {
+        @try {
+            boundValue = [self.boundObject objectAtIndex:self.boundIndex];
+        } @catch (NSException *exception) { 
+            NSLog(@"undefined keypath %@", self.boundObjectKeyPath); 
+        } 
+    }else if (self.boundObject != nil) {
         boundValue = self.boundObject;
     }
     return boundValue;
@@ -104,16 +120,10 @@
         }
     }
     
-    if(self.boundObject != nil && self.boundObjectKeyPath != nil) {    
-        @try {
-            [cell setControlValue: [self.boundObject valueForKeyPath:self.boundObjectKeyPath]];
-        } @catch (NSException *exception) { 
-            NSLog(@"undefined keypath %@", self.boundObjectKeyPath); 
-        }    
-    } else if(self.boundObject != nil) {
-        [cell setControlValue:self.boundObject];
+    if(self.boundValue != nil) {
+        [cell setControlValue:[self boundValue]];   
     }
-    
+        
     if(self.formControlFormatBlock != nil && cell.formControl != nil) {
         self.formControlFormatBlock(cell.formControl);
     }

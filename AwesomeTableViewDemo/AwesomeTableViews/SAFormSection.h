@@ -12,10 +12,8 @@
 - (SAFormCellConfig*) addCell:(SAFormCellConfig*) cell;
 - (SAFormCellConfig*) addCell:(SAFormCellConfig *)cell withAnimation:(BOOL)animate;
 
-- (SAFormCellConfig*) insertCell:(SAFormCellConfig*) cell;
-- (SAFormCellConfig*) insertCellAtIndex:(NSInteger) ind;
-- (SAFormCellConfig*) insertCell:(SAFormCellConfig*)cell withAnimation:(BOOL)animate;
-- (SAFormCellConfig*) insertCellAtIndex:(NSInteger)ind withAnimation:(BOOL)animate;
+- (SAFormCellConfig*) insertCell:(SAFormCellConfig*)cell atIndex:(NSInteger) ind;
+- (SAFormCellConfig*) insertCell:(SAFormCellConfig*)cell atIndex:(NSInteger) ind withAnimation:(BOOL)animate;
 
 - (SAFormCellConfig*) removeCell:(SAFormCellConfig*) cell;
 - (SAFormCellConfig*) removeCellAtIndex:(NSInteger) ind;

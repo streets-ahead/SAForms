@@ -63,19 +63,21 @@
     return cell;
 }
 
-- (SAFormCellConfig*) insertCell:(SAFormCellConfig*) cell {
-    @throw [NSException exceptionWithName:@"MethodNotImplemented" reason:@"this will be implemented later" userInfo:nil];
+- (SAFormCellConfig*) insertCell:(SAFormCellConfig*)cell atIndex:(NSInteger) ind {
+    [self.cells insertObject:cell atIndex:ind];
+    return cell;
 }
 
-- (SAFormCellConfig*) insertCellAtIndex:(NSInteger) ind {
-    @throw [NSException exceptionWithName:@"MethodNotImplemented" reason:@"this will be implemented later" userInfo:nil];
-}
-
-- (SAFormCellConfig*) insertCell:(SAFormCellConfig*)cell withAnimation:(BOOL)animate {
-    @throw [NSException exceptionWithName:@"MethodNotImplemented" reason:@"this will be implemented later" userInfo:nil];
-}
-
-- (SAFormCellConfig*) insertCellAtIndex:(NSInteger)ind withAnimation:(BOOL)animate {
-    @throw [NSException exceptionWithName:@"MethodNotImplemented" reason:@"this will be implemented later" userInfo:nil];
+- (SAFormCellConfig*) insertCell:(SAFormCellConfig*)cell atIndex:(NSInteger) ind withAnimation:(BOOL)animate {
+    [self insertCell:cell atIndex:ind];
+    if(animate) {
+        [self.tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:ind inSection:self.sectionNumber]]
+                              withRowAnimation:UITableViewRowAnimationAutomatic];
+    } else {
+        [self.tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:ind inSection:self.sectionNumber]] 
+                              withRowAnimation:UITableViewRowAnimationNone];        
+    }
+    return cell;
+    
 }
 @end

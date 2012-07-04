@@ -170,7 +170,17 @@
 - (SAFormSection*) removeSection:(SAFormSection*) section {
     [self.sections removeObject:section];
     section.tableView = nil;
+    [self.tableView reloadData];
     return section;
+}
+
+- (void) removeSectionAtIndex:(NSInteger)ind withAnimation:(BOOL)animate{
+    [self removeSectionAtIndex:ind];
+    if(animate) {
+        [self.tableView deleteSections:[NSIndexSet indexSetWithIndex:ind] withRowAnimation:UITableViewRowAnimationAutomatic];
+    } else {
+        [self.tableView deleteSections:[NSIndexSet indexSetWithIndex:ind] withRowAnimation:UITableViewRowAnimationNone];
+    }
 }
 
 @end

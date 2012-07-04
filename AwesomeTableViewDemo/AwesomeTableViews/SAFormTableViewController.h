@@ -14,6 +14,8 @@
 - (SAFormSection*) removeSection:(SAFormSection*) section;
 - (SAFormSection*) removeSectionAtIndex:(NSInteger) ind;
 
+- (void) removeSectionAtIndex:(NSInteger)ind withAnimation:(BOOL)animate;
+
 - (void) replaceSection:(SAFormSection*)oldSection withSection:(SAFormSection*)newSection;
 - (void) replaceSectionAtIndex:(NSInteger)ind withSection:(SAFormSection*)newSection;
 
