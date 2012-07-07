@@ -33,6 +33,10 @@
     }
 }
 
+- (void) setTextFieldDelegate:(id<UITextFieldDelegate>)delegate {
+    
+}
+
 - (void)drawRect:(CGRect)rect {
     [super drawRect:rect];
     if(_border) {

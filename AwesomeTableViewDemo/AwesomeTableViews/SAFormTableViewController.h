@@ -2,7 +2,7 @@
 @class SAFormCellConfig;
 @class SAFormSection;
 
-@interface SAFormTableViewController : UITableViewController
+@interface SAFormTableViewController : UITableViewController <UITextFieldDelegate, UITextViewDelegate>
 @property (strong, readonly) NSMutableArray* sections;
 @property (strong) UIToolbar* keyboardAccessoryBar;
 @property (assign) BOOL addKeyboardAccessroy;
@@ -24,4 +24,5 @@
 - (void) registerFirstResponder:(SAFormCell*)cell;
 - (void) deRegisterFirstResponder:(SAFormCell*)cell;
 - (void) doneEditing;
+- (SAFormCell*) cellForView:(UIView*)view;
 @end

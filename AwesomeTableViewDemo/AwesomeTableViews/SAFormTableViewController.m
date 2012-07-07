@@ -38,7 +38,6 @@
 }
 
 - (void) keyboardWillShow:(NSNotification*)notification {
-    NSLog(@"keyboard will show");
     
 }
 
@@ -109,6 +108,7 @@
     
     if(cell == nil) {
         cell = [[formCell.cellClass alloc] initWithStyle:formCell.cellStyle reuseIdentifier:reuseIdent];
+        [(SAFormCell*)cell setTextFieldDelegate:self];
     }
     
     [formCell formatCell:(SAFormCell*)cell];
@@ -182,6 +182,93 @@
         [self.tableView deleteSections:[NSIndexSet indexSetWithIndex:ind] withRowAnimation:UITableViewRowAnimationNone];
     }
 }
+
+- (SAFormCell*) cellForView:(UIView*)view {
+    UIView* superView = view.superview;
+    while (superView != nil && ![superView isKindOfClass:[SAFormCell class]]) {
+        superView = superView.superview;
+    }
+    if(superView != nil) {
+        return (SAFormCell*)superView;
+    } else {
+        return nil;
+    }
+}
+
+#pragma mark textfield delegate
+- (BOOL)textFieldShouldBeginEditing:(UITextField *)textField {
+    UIView* superView = [self cellForView:textField];
+    if(superView != nil) {
+        [self registerFirstResponder:(SAFormCell*)superView];
+    }
+    return YES;
+}
+
+- (void)textFieldDidEndEditing:(UITextField *)textField {
+    UIView* superView = [self cellForView:textField];
+    if(superView != nil) {
+        [self deRegisterFirstResponder:(SAFormCell*)superView];
+    }
+}
+
+// These are implemented because I may use them later and I want my subclasses 
+// to be able to call [super ...]
+- (void)textFieldDidBeginEditing:(UITextField *)textField {
+    
+}
+
+- (BOOL)textFieldShouldEndEditing:(UITextField *)textField {
+    return YES;
+}
+
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
+    return YES;
+}
+
+- (BOOL)textFieldShouldClear:(UITextField *)textField {
+    return YES;
+}
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField {
+    return YES;
+}
+
+#pragma mark textview delegate
+- (BOOL)textViewShouldBeginEditing:(UITextView *)textView {
+    UIView* superView = [self cellForView:textView];
+    if(superView != nil) {
+        [self registerFirstResponder:(SAFormCell*)superView];
+    }
+    return YES;
+}
+
+- (void)textViewDidEndEditing:(UITextView *)textView {
+    UIView* superView = [self cellForView:textView];
+    if(superView != nil) {
+        [self deRegisterFirstResponder:(SAFormCell*)superView];
+    }
+}
+
+- (BOOL)textViewShouldEndEditing:(UITextView *)textView {
+    return YES;
+}
+
+- (void)textViewDidBeginEditing:(UITextView *)textView {
+    
+}
+
+- (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text {
+    return YES;
+}
+
+- (void)textViewDidChange:(UITextView *)textView {
+    
+}
+
+- (void)textViewDidChangeSelection:(UITextView *)textView {
+    
+}
+
 
 @end
 

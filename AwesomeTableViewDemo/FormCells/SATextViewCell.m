@@ -14,7 +14,6 @@
         _textView.font = [UIFont systemFontOfSize:17];
         _textView.textColor = [UIColor colorWithWhite:.4 alpha:1];
         _textView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;
-        _textView.delegate = self;
         _textView.backgroundColor = [UIColor clearColor];
         [self.contentView addSubview:_textView];
         self.formControl = _textView;
@@ -24,6 +23,10 @@
         self.textLabel.backgroundColor = [UIColor clearColor];
     }
     return self;
+}
+ 
+- (void) setTextFieldDelegate:(id)delegate {
+    self.textView.delegate = delegate;
 }
 
 - (void)layoutSubviews {

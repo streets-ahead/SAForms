@@ -14,12 +14,15 @@
         _textField.font = [UIFont systemFontOfSize:17];
         _textField.textColor = [UIColor colorWithWhite:.4 alpha:1];
         _textField.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;
-        _textField.delegate = self;
         [_textField addTarget:self action:@selector(valueChanged) forControlEvents:UIControlEventEditingChanged];
         [self.contentView addSubview:self.textField];
         self.formControl = self.textField;
     }
     return self;
+}
+
+- (void) setTextFieldDelegate:(id)delegate {
+    self.textField.delegate = delegate;
 }
 
 - (void)valueChanged {
@@ -42,25 +45,6 @@
                                  self.contentView.bounds.size.height - 10);
     self.textField.frame = formRect;
     [self.contentView bringSubviewToFront:self.textField];
-}
-
-- (BOOL)textFieldShouldBeginEditing:(UITextField *)textField {
-    id supr = self.superview;
-    if(supr != nil && [supr isKindOfClass:[UITableView class]]) {   
-        if([[supr delegate] respondsToSelector:@selector(registerFirstResponder:)]) {
-            [[supr delegate] registerFirstResponder:self];
-        }
-    }
-    return YES;
-}
-
-- (void)textFieldDidEndEditing:(UITextField *)textField {
-    id supr = self.superview;
-    if(supr != nil && [supr isKindOfClass:[UITableView class]]) {   
-        if([[supr delegate] respondsToSelector:@selector(deRegisterFirstResponder:)]) {
-            [[supr delegate] deRegisterFirstResponder:self];
-        }
-    }
 }
 
 

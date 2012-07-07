@@ -21,5 +21,6 @@ typedef enum {
 @property (strong) UIColor* borderColor;
 - (void) setControlValue:(id) value;
 - (void) valueChanged;
+- (void) setTextFieldDelegate:(id)delegate;
 @end
 
