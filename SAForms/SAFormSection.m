@@ -21,7 +21,7 @@
 
 #import "SAFormSection.h"
 #import "SAFormHeaderFooter.h"
-#import "SAFormCellConfig.m"
+#import "SAFormCellConfig.h"
 
 @implementation SAFormSection : NSObject 
 @synthesize cells = _cells;

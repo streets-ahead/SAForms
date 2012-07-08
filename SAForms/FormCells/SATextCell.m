@@ -32,7 +32,7 @@
         self.selectionStyle = UITableViewCellSelectionStyleNone;
         _textField = [[UITextField alloc] initWithFrame:CGRectZero];     
         _textField.borderStyle = UITextBorderStyleNone;
-        _textField.font = [UIFont systemFontOfSize:17];
+        _textField.font = [UIFont systemFontOfSize:22];
         _textField.textColor = [UIColor colorWithWhite:.4 alpha:1];
         _textField.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;
         [_textField addTarget:self action:@selector(valueChanged) forControlEvents:UIControlEventEditingChanged];
@@ -61,9 +61,9 @@
     if(self.textLabel.text != nil && ![self.textLabel.text isEqualToString:@""]) {
         percent = self.contentView.bounds.size.width * .35;
     }
-    CGRect formRect = CGRectMake(percent, 5, 
+    CGRect formRect = CGRectMake(percent, 8, 
                                  self.contentView.bounds.size.width - percent - 10, 
-                                 self.contentView.bounds.size.height - 10);
+                                 self.contentView.bounds.size.height - 16);
     self.textField.frame = formRect;
     [self.contentView bringSubviewToFront:self.textField];
 }

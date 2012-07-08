@@ -37,6 +37,7 @@
 @synthesize valueChangedBlock = _valueChangedBlock;
 @synthesize formControlFormatBlock = _formControlFormatBlock;
 @synthesize boundIndex = _boundIndex;
+@synthesize reuseIdentifier = _reuseIdentifier;
 
 - (id)init {
     self = [super init];
@@ -46,6 +47,7 @@
         self.selectionStyle = UITableViewCellSelectionStyleBlue;
         self.height = 44;
         self.boundIndex = -1;
+        self.reuseIdentifier = @"";
     }
     return self;
 }
@@ -141,7 +143,7 @@
         }
     }
     
-    if(self.boundValue != nil) {
+    if([self boundValue] != nil) {
         [cell setControlValue:[self boundValue]];   
     }
         

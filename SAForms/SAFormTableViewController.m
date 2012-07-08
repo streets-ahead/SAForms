@@ -124,7 +124,7 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     SAFormCellConfig* formCell = [[[self.sections objectAtIndex:indexPath.section] cells] objectAtIndex:indexPath.row];
-    NSString* reuseIdent = [NSString stringWithFormat:@"%@%@", formCell.cellClass, formCell.cellStyle];
+    NSString* reuseIdent = [NSString stringWithFormat:@"%@%@%@", formCell.cellClass, formCell.cellStyle, formCell.reuseIdentifier];
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier: reuseIdent];
     
     if(cell == nil) {

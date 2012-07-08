@@ -45,6 +45,7 @@ typedef void (^FormControlFormat) (id formControl);
 @property (strong) NSString* boundObjectKeyPath;
 @property (strong) id boundObject;
 @property (assign) NSInteger boundIndex;
+@property (strong) NSString* reuseIdentifier;
 @property (copy) ValueChangedBlock valueChangedBlock;
 @property (copy) FormControlFormat formControlFormatBlock;
 
