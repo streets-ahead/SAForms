@@ -32,9 +32,19 @@
 @synthesize keyboardAccessoryBar = _keyboardAccessoryBar;
 @synthesize addKeyboardAccessroy = _addKeyboardAccessroy;
 
+- (id)initWithStyle:(UITableViewStyle)style {
+    self = [super initWithStyle:style];
+    if (self) {
+        _sections = [NSMutableArray array];
+    }
+    return self;
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
-    _sections = [NSMutableArray array];
+    if(_sections == nil) {
+        _sections = [NSMutableArray array];
+    }
     
     self.keyboardAccessoryBar = [[UIToolbar alloc] initWithFrame:CGRectZero];
     [self.keyboardAccessoryBar sizeToFit];
@@ -124,7 +134,7 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     SAFormCellConfig* formCell = [[[self.sections objectAtIndex:indexPath.section] cells] objectAtIndex:indexPath.row];
-    NSString* reuseIdent = [NSString stringWithFormat:@"%@%@%@", formCell.cellClass, formCell.cellStyle, formCell.reuseIdentifier];
+    NSString* reuseIdent = [NSString stringWithFormat:@"%@%d%@", formCell.cellClass, formCell.cellStyle, formCell.reuseIdentifier];
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier: reuseIdent];
     
     if(cell == nil) {

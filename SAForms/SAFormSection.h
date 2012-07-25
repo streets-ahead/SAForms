@@ -30,6 +30,8 @@
 @property (weak) UITableView* tableView;
 @property (assign) NSInteger sectionNumber;
 
+- (id)initWithTextCells:(NSArray*)cellLabels;
+
 - (SAFormCellConfig*) addCell:(SAFormCellConfig*) cell;
 - (SAFormCellConfig*) addCell:(SAFormCellConfig *)cell withAnimation:(BOOL)animate;
 

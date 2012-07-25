@@ -38,6 +38,18 @@
     return self;
 }
 
+- (id)initWithTextCells:(NSArray*)cellLabels {
+    self = [super init];
+    if (self) {
+        _cells = [NSMutableArray array];
+        [cellLabels enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+            [self addCell:[[SAFormCellConfig alloc] initWithLabel:obj]];
+        }];
+        
+    }
+    return self;
+}
+
 - (SAFormCellConfig*)addCell:(SAFormCellConfig *)cell {
     [self.cells addObject:cell];
     return cell;
