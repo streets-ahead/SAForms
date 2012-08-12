@@ -24,6 +24,11 @@
 #import "SAFormCellConfig.h"
 #import "SAFormTableViewController.h"
 
+@interface SATextViewCell()
+- (void) textViewStartedEditing:(NSNotification*)notification;
+- (void) textViewEndedEditing:(NSNotification*)notification;
+@end
+
 @implementation SATextViewCell
 @synthesize textView = _textView;
 
@@ -42,6 +47,25 @@
         self.textLabel.textColor = [UIColor colorWithWhite:0.85 alpha:1];
         self.textLabel.textAlignment = UITextAlignmentCenter;
         self.textLabel.backgroundColor = [UIColor clearColor];
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(valueChanged)
+                                                     name:UITextViewTextDidChangeNotification
+                                                   object:self.textView];
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(valueChanged)
+                                                     name:UITextViewTextDidChangeNotification
+                                                   object:self.textView];
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(textViewStartedEditing:)
+                                                     name:UITextViewTextDidBeginEditingNotification
+                                                   object:self.textView];
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(textViewEndedEditing:)
+                                                     name:UITextViewTextDidEndEditingNotification
+                                                   object:self.textView];
     }
     return self;
 }
@@ -62,31 +86,29 @@
     self.textLabel.frame = formRect;
 }
 
-- (void)textViewDidChange:(UITextView *)textView {
-    [self.currentConfig valueUpdated:self.textView.text];
-}
- 
-- (BOOL)textViewShouldBeginEditing:(UITextView *)textView {
-    id supr = self.superview;
-    if(supr != nil && [supr isKindOfClass:[UITableView class]]) {   
-        if([[supr delegate] respondsToSelector:@selector(registerFirstResponder:)]) {
-            [[supr delegate] registerFirstResponder:self];
-        }
+- (void) textViewStartedEditing:(NSNotification*)notification {
+    if([self.textView.text isEqualToString:@""]) {
+        self.textView.text = @"?";
+        [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+            [self.textView setSelectedRange:NSMakeRange(0, 0)];
+        }];
+            
     }
+    
     self.textLabel.hidden = YES;
-    return YES;
 }
 
-- (void)textViewDidEndEditing:(UITextView *)textView {
-    id supr = self.superview;
-    if(supr != nil && [supr isKindOfClass:[UITableView class]]) {   
-        if([[supr delegate] respondsToSelector:@selector(deRegisterFirstResponder:)]) {
-            [[supr delegate] deRegisterFirstResponder:self];
-        }
-    }
-    if(self.textView.text == nil || [self.textView.text isEqualToString:@""]) {
+- (void) textViewEndedEditing:(NSNotification*)notification {
+    if([self.textView.text isEqualToString:@"?"] || [self.textView.text isEqualToString:@""]) {
+        self.textView.text = @"";
         self.textLabel.hidden = NO;
+    } else {
+        self.textLabel.hidden = YES;
     }
+}
+
+- (void)valueChanged {
+    [self.currentConfig valueUpdated:self.textView.text];
 }
 
 - (void) setControlValue:(id) value {
