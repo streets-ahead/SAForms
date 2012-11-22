@@ -50,6 +50,10 @@
     return self;
 }
 
++ (SAFormSection*)section {
+    return [[SAFormSection alloc] init];
+}
+
 - (SAFormCellConfig*)addCell:(SAFormCellConfig *)cell {
     [self.cells addObject:cell];
     return cell;

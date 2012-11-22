@@ -42,4 +42,6 @@
 - (SAFormCellConfig*) removeCellAtIndex:(NSInteger) ind;
 - (SAFormCellConfig*) removeCell:(SAFormCellConfig*)cell withAnimation:(BOOL)animate;
 - (SAFormCellConfig*) removeCellAtIndex:(NSInteger)ind withAnimation:(BOOL)animate;
+
++ (SAFormSection*)section;
 @end
